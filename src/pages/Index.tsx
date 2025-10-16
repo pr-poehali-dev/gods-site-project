@@ -25,6 +25,24 @@ interface Timeline {
   description: string;
 }
 
+interface Artifact {
+  id: number;
+  name: string;
+  culture: string;
+  type: string;
+  description: string;
+  location: string;
+  significance: string;
+}
+
+interface QuizQuestion {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+}
+
 const deities: Deity[] = [
   {
     id: 1,
@@ -190,14 +208,152 @@ const timeline: Timeline[] = [
   },
 ];
 
+const artifacts: Artifact[] = [
+  {
+    id: 1,
+    name: 'Маска Агамемнона',
+    culture: 'greek',
+    type: 'Погребальная маска',
+    description: 'Золотая погребальная маска, найденная в Микенах',
+    location: 'Национальный археологический музей, Афины',
+    significance: 'Символ микенской цивилизации и эпохи героев',
+  },
+  {
+    id: 2,
+    name: 'Парфенон',
+    culture: 'greek',
+    type: 'Храм',
+    description: 'Главный храм Афины на Акрополе',
+    location: 'Акрополь, Афины, Греция',
+    significance: 'Величайший образец дорического ордера и греческой архитектуры',
+  },
+  {
+    id: 3,
+    name: 'Дельфийский Оракул',
+    culture: 'greek',
+    type: 'Святилище',
+    description: 'Священное место предсказаний бога Аполлона',
+    location: 'Дельфы, Греция',
+    significance: 'Важнейший религиозный центр древней Греции',
+  },
+  {
+    id: 4,
+    name: 'Корабль Осеберг',
+    culture: 'norse',
+    type: 'Погребальная ладья',
+    description: 'Викингский корабль IX века с богатыми украшениями',
+    location: 'Музей кораблей викингов, Осло',
+    significance: 'Лучше всего сохранившийся корабль викингов',
+  },
+  {
+    id: 5,
+    name: 'Рунный камень Еллинге',
+    culture: 'norse',
+    type: 'Рунический камень',
+    description: 'Памятник с руническими надписями X века',
+    location: 'Еллинге, Дания',
+    significance: 'Свидетельство христианизации Дании',
+  },
+  {
+    id: 6,
+    name: 'Храм в Упсале',
+    culture: 'norse',
+    type: 'Языческий храм',
+    description: 'Главное святилище скандинавских богов',
+    location: 'Упсала, Швеция (разрушен)',
+    significance: 'Центр религиозных обрядов и жертвоприношений',
+  },
+  {
+    id: 7,
+    name: 'Великая пирамида Хеопса',
+    culture: 'egyptian',
+    type: 'Гробница',
+    description: 'Крупнейшая из пирамид Гизы',
+    location: 'Гиза, Египет',
+    significance: 'Единственное сохранившееся чудо света древнего мира',
+  },
+  {
+    id: 8,
+    name: 'Храм Карнак',
+    culture: 'egyptian',
+    type: 'Храмовый комплекс',
+    description: 'Крупнейший храмовый комплекс Древнего Египта',
+    location: 'Луксор, Египет',
+    significance: 'Главный храм бога Амона-Ра',
+  },
+  {
+    id: 9,
+    name: 'Долина Царей',
+    culture: 'egyptian',
+    type: 'Некрополь',
+    description: 'Место захоронения фараонов Нового царства',
+    location: 'Западный берег Нила, Луксор',
+    significance: 'Здесь была найдена гробница Тутанхамона',
+  },
+];
+
+const quizQuestions: QuizQuestion[] = [
+  {
+    id: 1,
+    question: 'Кто из богов сверг своего отца Крона?',
+    options: ['Посейдон', 'Зевс', 'Аид', 'Аполлон'],
+    correctAnswer: 1,
+    explanation: 'Зевс возглавил восстание богов-олимпийцев против титанов и сверг своего отца Крона.',
+  },
+  {
+    id: 2,
+    question: 'Что отдал Один за мудрость?',
+    options: ['Руку', 'Глаз', 'Ногу', 'Сердце'],
+    correctAnswer: 1,
+    explanation: 'Один отдал свой глаз великану Мимиру за право испить из источника мудрости.',
+  },
+  {
+    id: 3,
+    question: 'Какое животное ассоциируется с богиней Афиной?',
+    options: ['Орёл', 'Лев', 'Сова', 'Змея'],
+    correctAnswer: 2,
+    explanation: 'Сова — символ мудрости и священное животное Афины.',
+  },
+  {
+    id: 4,
+    question: 'Как называется молот бога Тора?',
+    options: ['Гунгнир', 'Мьёльнир', 'Грамр', 'Тюрфинг'],
+    correctAnswer: 1,
+    explanation: 'Мьёльнир — легендарный молот Тора, способный вызывать гром и молнии.',
+  },
+  {
+    id: 5,
+    question: 'Каким образом Ра путешествует по небу?',
+    options: ['На колеснице', 'В солнечной ладье', 'На драконе', 'Пешком'],
+    correctAnswer: 1,
+    explanation: 'Ра каждый день проплывает по небу в своей солнечной ладье.',
+  },
+  {
+    id: 6,
+    question: 'Кто взвешивает сердца умерших в египетской мифологии?',
+    options: ['Ра', 'Анубис', 'Осирис', 'Гор'],
+    correctAnswer: 1,
+    explanation: 'Анубис взвешивает сердце умершего на весах Маат, определяя его достойность.',
+  },
+];
+
 const Index = () => {
   const [selectedCulture, setSelectedCulture] = useState<string>('all');
   const [selectedDeity, setSelectedDeity] = useState<Deity | null>(null);
   const [showRelations, setShowRelations] = useState(false);
+  const [currentQuizQuestion, setCurrentQuizQuestion] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [quizScore, setQuizScore] = useState(0);
+  const [showQuizResult, setShowQuizResult] = useState(false);
+  const [quizStarted, setQuizStarted] = useState(false);
 
   const filteredDeities = selectedCulture === 'all' 
     ? deities 
     : deities.filter(d => d.culture === selectedCulture);
+
+  const filteredArtifacts = selectedCulture === 'all' 
+    ? artifacts 
+    : artifacts.filter(a => a.culture === selectedCulture);
 
   const playPronunciation = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -206,6 +362,30 @@ const Index = () => {
       utterance.rate = 0.8;
       window.speechSynthesis.speak(utterance);
     }
+  };
+
+  const handleQuizAnswer = (answerIndex: number) => {
+    setSelectedAnswer(answerIndex);
+    if (answerIndex === quizQuestions[currentQuizQuestion].correctAnswer) {
+      setQuizScore(quizScore + 1);
+    }
+  };
+
+  const handleNextQuestion = () => {
+    if (currentQuizQuestion < quizQuestions.length - 1) {
+      setCurrentQuizQuestion(currentQuizQuestion + 1);
+      setSelectedAnswer(null);
+    } else {
+      setShowQuizResult(true);
+    }
+  };
+
+  const resetQuiz = () => {
+    setCurrentQuizQuestion(0);
+    setSelectedAnswer(null);
+    setQuizScore(0);
+    setShowQuizResult(false);
+    setQuizStarted(false);
   };
 
   return (
@@ -570,6 +750,166 @@ const Index = () => {
           </div>
         )}
       </main>
+
+      <div className="container mx-auto px-4 pb-20">
+        <div className="mb-12 p-8 bg-card/50 backdrop-blur rounded-lg border-2 border-accent/30 animate-fade-in">
+          <h2 className="text-3xl font-bold text-center mb-6 text-accent flex items-center justify-center gap-3">
+            <Icon name="Landmark" size={32} />
+            Артефакты и священные места
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredArtifacts.map((artifact) => (
+              <Card key={artifact.id} className="border-2 border-accent/20 hover:border-accent/50 transition-all group">
+                <CardHeader>
+                  <div className="flex items-start justify-between mb-2">
+                    <Badge variant="outline" className="bg-accent/10 text-accent border-accent/30">
+                      {cultures[artifact.culture as keyof typeof cultures].name}
+                    </Badge>
+                    <Icon 
+                      name={cultures[artifact.culture as keyof typeof cultures].icon as any} 
+                      size={24} 
+                      className="text-accent/50 group-hover:text-accent transition-colors" 
+                    />
+                  </div>
+                  <CardTitle className="text-xl mb-1">{artifact.name}</CardTitle>
+                  <CardDescription className="text-accent/80 font-semibold">{artifact.type}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-muted-foreground">{artifact.description}</p>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex items-start gap-2">
+                      <Icon name="MapPin" size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{artifact.location}</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Icon name="Info" size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                      <span className="text-muted-foreground">{artifact.significance}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-12 p-8 bg-card/50 backdrop-blur rounded-lg border-2 border-primary/30 animate-fade-in">
+          <h2 className="text-3xl font-bold text-center mb-6 text-primary flex items-center justify-center gap-3">
+            <Icon name="Brain" size={32} />
+            Викторина: Проверь свои знания
+          </h2>
+          
+          {!quizStarted ? (
+            <div className="text-center space-y-6">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Проверьте свои знания о древних богах и мифологии! Ответьте на 6 вопросов о греческих, скандинавских и египетских божествах.
+              </p>
+              <button
+                onClick={() => setQuizStarted(true)}
+                className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-all text-lg font-semibold flex items-center gap-2 mx-auto"
+              >
+                <Icon name="Play" size={24} />
+                Начать викторину
+              </button>
+            </div>
+          ) : !showQuizResult ? (
+            <div className="max-w-3xl mx-auto space-y-6">
+              <div className="flex justify-between items-center mb-6">
+                <Badge variant="outline" className="text-sm">
+                  Вопрос {currentQuizQuestion + 1} из {quizQuestions.length}
+                </Badge>
+                <div className="text-sm text-muted-foreground">
+                  Счёт: {quizScore} / {currentQuizQuestion + (selectedAnswer !== null ? 1 : 0)}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-6">{quizQuestions[currentQuizQuestion].question}</h3>
+                <div className="space-y-3">
+                  {quizQuestions[currentQuizQuestion].options.map((option, index) => (
+                    <button
+                      key={index}
+                      onClick={() => selectedAnswer === null && handleQuizAnswer(index)}
+                      disabled={selectedAnswer !== null}
+                      className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
+                        selectedAnswer === null
+                          ? 'border-primary/30 hover:border-primary/60 hover:bg-primary/5'
+                          : index === quizQuestions[currentQuizQuestion].correctAnswer
+                          ? 'border-green-500 bg-green-500/10'
+                          : index === selectedAnswer
+                          ? 'border-red-500 bg-red-500/10'
+                          : 'border-muted opacity-50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
+                          selectedAnswer === null
+                            ? 'bg-primary/20 text-primary'
+                            : index === quizQuestions[currentQuizQuestion].correctAnswer
+                            ? 'bg-green-500/20 text-green-500'
+                            : index === selectedAnswer
+                            ? 'bg-red-500/20 text-red-500'
+                            : 'bg-muted text-muted-foreground'
+                        }`}>
+                          {String.fromCharCode(65 + index)}
+                        </div>
+                        <span className="flex-1">{option}</span>
+                        {selectedAnswer !== null && index === quizQuestions[currentQuizQuestion].correctAnswer && (
+                          <Icon name="Check" size={20} className="text-green-500" />
+                        )}
+                        {selectedAnswer === index && index !== quizQuestions[currentQuizQuestion].correctAnswer && (
+                          <Icon name="X" size={20} className="text-red-500" />
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {selectedAnswer !== null && (
+                <div className="p-4 bg-accent/10 rounded-lg border-2 border-accent/30 animate-fade-in">
+                  <p className="text-sm text-muted-foreground">{quizQuestions[currentQuizQuestion].explanation}</p>
+                </div>
+              )}
+
+              {selectedAnswer !== null && (
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleNextQuestion}
+                    className="px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-all font-semibold flex items-center gap-2"
+                  >
+                    {currentQuizQuestion < quizQuestions.length - 1 ? 'Следующий вопрос' : 'Показать результаты'}
+                    <Icon name="ArrowRight" size={20} />
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center space-y-6 max-w-2xl mx-auto">
+              <div className="p-8 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg border-2 border-primary/30">
+                <Icon name="Trophy" size={64} className="text-primary mx-auto mb-4" />
+                <h3 className="text-3xl font-bold mb-2">Викторина завершена!</h3>
+                <p className="text-5xl font-bold text-primary mb-4">{quizScore} / {quizQuestions.length}</p>
+                <p className="text-lg text-muted-foreground">
+                  {quizScore === quizQuestions.length
+                    ? '🎉 Превосходно! Вы настоящий эксперт по мифологии!'
+                    : quizScore >= quizQuestions.length * 0.7
+                    ? '👏 Отлично! Вы хорошо знаете древних богов!'
+                    : quizScore >= quizQuestions.length * 0.5
+                    ? '👍 Неплохо! Продолжайте изучать мифологию!'
+                    : '📚 Стоит больше узнать о древних цивилизациях!'}
+                </p>
+              </div>
+              <button
+                onClick={resetQuiz}
+                className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-all text-lg font-semibold flex items-center gap-2 mx-auto"
+              >
+                <Icon name="RotateCcw" size={24} />
+                Пройти снова
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
 
       <footer className="border-t border-border/50 py-8 text-center text-sm text-muted-foreground">
         <div className="container mx-auto px-4">
