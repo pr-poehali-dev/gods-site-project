@@ -15,6 +15,14 @@ interface Deity {
   imageUrl?: string;
   pronunciation?: string;
   relatedDeities?: number[];
+  myths?: string[];
+}
+
+interface Timeline {
+  culture: string;
+  period: string;
+  years: string;
+  description: string;
 }
 
 const deities: Deity[] = [
@@ -29,6 +37,11 @@ const deities: Deity[] = [
     imageUrl: 'https://cdn.poehali.dev/projects/9c4d6efb-88f2-438a-b665-844501576eff/files/cf406206-3154-44cd-932e-469fd66f4e88.jpg',
     pronunciation: 'Zeus',
     relatedDeities: [2, 3],
+    myths: [
+      'Зевс сверг своего отца Крона и Титанов, заняв трон Олимпа',
+      'Разделил мир между братьями: себе — небо, Посейдону — море, Аиду — подземное царство',
+      'Превращался в животных, чтобы соблазнять смертных женщин'
+    ],
   },
   {
     id: 2,
@@ -63,6 +76,11 @@ const deities: Deity[] = [
     imageUrl: 'https://cdn.poehali.dev/projects/9c4d6efb-88f2-438a-b665-844501576eff/files/663b74fa-e636-4e98-8b7e-9ea4ca4f7451.jpg',
     pronunciation: 'Odin',
     relatedDeities: [5, 6],
+    myths: [
+      'Отдал свой глаз великану Мимиру за глоток из источника мудрости',
+      'Висел на мировом древе Иггдрасиль девять дней, чтобы познать руны',
+      'Посылает воронов Хугина и Мунина собирать знания о мире'
+    ],
   },
   {
     id: 5,
@@ -97,6 +115,11 @@ const deities: Deity[] = [
     imageUrl: 'https://cdn.poehali.dev/projects/9c4d6efb-88f2-438a-b665-844501576eff/files/402abf39-6106-4d0e-bbae-a2c81ad40421.jpg',
     pronunciation: 'Ra',
     relatedDeities: [8, 9],
+    myths: [
+      'Каждый день проплывает по небу в солнечной ладье, а ночью сражается с змеем Апофисом',
+      'Создал людей из своих слёз, когда плакал о своем одиночестве',
+      'Сливается с другими богами, становясь Амон-Ра или Атум-Ра'
+    ],
   },
   {
     id: 8,
@@ -127,6 +150,45 @@ const cultures = {
   norse: { name: 'Скандинавская', icon: 'Axe' },
   egyptian: { name: 'Египетская', icon: 'Pyramid' },
 };
+
+const timeline: Timeline[] = [
+  {
+    culture: 'egyptian',
+    period: 'Древнее царство',
+    years: '2686-2181 до н.э.',
+    description: 'Расцвет культа Ра, строительство великих пирамид в Гизе',
+  },
+  {
+    culture: 'egyptian',
+    period: 'Среднее царство',
+    years: '2055-1650 до н.э.',
+    description: 'Возвышение культа Амона, слияние с Ра (Амон-Ра)',
+  },
+  {
+    culture: 'greek',
+    period: 'Микенская эпоха',
+    years: '1600-1100 до н.э.',
+    description: 'Формирование олимпийского пантеона, культ Зевса',
+  },
+  {
+    culture: 'greek',
+    period: 'Классический период',
+    years: '500-323 до н.э.',
+    description: 'Золотой век греческой мифологии, строительство Парфенона',
+  },
+  {
+    culture: 'norse',
+    period: 'Эпоха викингов',
+    years: '793-1066 н.э.',
+    description: 'Расцвет скандинавской мифологии, культ Одина и Тора',
+  },
+  {
+    culture: 'norse',
+    period: 'Христианизация',
+    years: '1000-1200 н.э.',
+    description: 'Записаны Эдды, сохранившие скандинавские мифы',
+  },
+];
 
 const Index = () => {
   const [selectedCulture, setSelectedCulture] = useState<string>('all');
@@ -178,6 +240,39 @@ const Index = () => {
       </div>
 
       <main className="container mx-auto px-4 pb-20">
+        <div className="mb-12 p-8 bg-card/50 backdrop-blur rounded-lg border-2 border-primary/30 animate-fade-in">
+          <h2 className="text-3xl font-bold text-center mb-6 text-primary flex items-center justify-center gap-3">
+            <Icon name="Clock" size={32} />
+            Временная шкала древних цивилизаций
+          </h2>
+          <div className="relative">
+            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary/30 transform -translate-x-1/2"></div>
+            <div className="space-y-8">
+              {timeline.map((event, index) => (
+                <div key={index} className={`flex items-center gap-4 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
+                  <div className={`flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                    <div className="inline-block p-4 bg-secondary/80 rounded-lg border-2 border-primary/30 hover:border-primary/60 transition-all">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Icon name={cultures[event.culture as keyof typeof cultures].icon as any} size={20} className="text-primary" />
+                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                          {cultures[event.culture as keyof typeof cultures].name}
+                        </Badge>
+                      </div>
+                      <h3 className="text-lg font-bold text-foreground mb-1">{event.period}</h3>
+                      <p className="text-sm text-primary font-semibold mb-2">{event.years}</p>
+                      <p className="text-sm text-muted-foreground">{event.description}</p>
+                    </div>
+                  </div>
+                  <div className="relative flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 border-4 border-primary z-10">
+                    <div className="w-3 h-3 rounded-full bg-primary"></div>
+                  </div>
+                  <div className="flex-1"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="flex justify-center mb-8">
           <button
             onClick={() => setShowRelations(!showRelations)}
@@ -394,6 +489,25 @@ const Index = () => {
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">{selectedDeity.description}</p>
                 </div>
+
+                {selectedDeity.myths && selectedDeity.myths.length > 0 && (
+                  <div className="p-6 bg-accent/10 rounded-lg border-2 border-accent/30">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-accent">
+                      <Icon name="Scroll" size={20} />
+                      Мифы и легенды
+                    </h3>
+                    <div className="space-y-3">
+                      {selectedDeity.myths.map((myth, index) => (
+                        <div key={index} className="flex gap-3 items-start">
+                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-xs font-bold text-accent">
+                            {index + 1}
+                          </div>
+                          <p className="text-sm text-muted-foreground leading-relaxed flex-1">{myth}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
