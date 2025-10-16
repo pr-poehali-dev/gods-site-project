@@ -13,6 +13,8 @@ interface Deity {
   attributes: string[];
   symbols: string[];
   imageUrl?: string;
+  pronunciation?: string;
+  relatedDeities?: number[];
 }
 
 const deities: Deity[] = [
@@ -25,6 +27,8 @@ const deities: Deity[] = [
     attributes: ['Власть', 'Справедливость', 'Небо'],
     symbols: ['Молния', 'Орёл', 'Дуб'],
     imageUrl: 'https://cdn.poehali.dev/projects/9c4d6efb-88f2-438a-b665-844501576eff/files/cf406206-3154-44cd-932e-469fd66f4e88.jpg',
+    pronunciation: 'Zeus',
+    relatedDeities: [2, 3],
   },
   {
     id: 2,
@@ -34,6 +38,8 @@ const deities: Deity[] = [
     description: 'Брат Зевса, повелитель океанов и землетрясений. Держит в руках могучий трезубец, которым усмиряет бури.',
     attributes: ['Море', 'Бури', 'Землетрясения'],
     symbols: ['Трезубец', 'Дельфин', 'Конь'],
+    pronunciation: 'Poseidon',
+    relatedDeities: [1, 3],
   },
   {
     id: 3,
@@ -43,6 +49,8 @@ const deities: Deity[] = [
     description: 'Дочь Зевса, рождённая из его головы. Покровительница науки, искусства, справедливой войны и ремёсел.',
     attributes: ['Мудрость', 'Стратегия', 'Ремёсла'],
     symbols: ['Сова', 'Копьё', 'Эгида'],
+    pronunciation: 'Athena',
+    relatedDeities: [1, 2],
   },
   {
     id: 4,
@@ -53,6 +61,8 @@ const deities: Deity[] = [
     attributes: ['Мудрость', 'Война', 'Магия'],
     symbols: ['Воронов Хугин и Мунин', 'Копьё Гунгнир', 'Слейпнир'],
     imageUrl: 'https://cdn.poehali.dev/projects/9c4d6efb-88f2-438a-b665-844501576eff/files/663b74fa-e636-4e98-8b7e-9ea4ca4f7451.jpg',
+    pronunciation: 'Odin',
+    relatedDeities: [5, 6],
   },
   {
     id: 5,
@@ -62,6 +72,8 @@ const deities: Deity[] = [
     description: 'Сын Одина, защитник Асгарда и Мидгарда. Владеет молотом Мьёльниром, способным вызывать гром и молнии.',
     attributes: ['Сила', 'Защита', 'Гром'],
     symbols: ['Молот Мьёльнир', 'Козлы', 'Пояс силы'],
+    pronunciation: 'Thor',
+    relatedDeities: [4, 6],
   },
   {
     id: 6,
@@ -71,6 +83,8 @@ const deities: Deity[] = [
     description: 'Богиня любви, красоты и плодородия. Владеет магией сейдр и командует валькириями.',
     attributes: ['Любовь', 'Красота', 'Магия'],
     symbols: ['Ожерелье Брисингамен', 'Колесница с кошками', 'Соколиное оперение'],
+    pronunciation: 'Freya',
+    relatedDeities: [4, 5],
   },
   {
     id: 7,
@@ -81,6 +95,8 @@ const deities: Deity[] = [
     attributes: ['Солнце', 'Творение', 'Порядок'],
     symbols: ['Солнечный диск', 'Ладья', 'Сокол'],
     imageUrl: 'https://cdn.poehali.dev/projects/9c4d6efb-88f2-438a-b665-844501576eff/files/402abf39-6106-4d0e-bbae-a2c81ad40421.jpg',
+    pronunciation: 'Ra',
+    relatedDeities: [8, 9],
   },
   {
     id: 8,
@@ -90,6 +106,8 @@ const deities: Deity[] = [
     description: 'Бог бальзамирования и проводник душ в царство мёртвых. Взвешивает сердца умерших на весах Маат.',
     attributes: ['Загробная жизнь', 'Бальзамирование', 'Суд'],
     symbols: ['Весы', 'Посох', 'Анкх'],
+    pronunciation: 'Anubis',
+    relatedDeities: [7, 9],
   },
   {
     id: 9,
@@ -99,6 +117,8 @@ const deities: Deity[] = [
     description: 'Богиня материнства, магии и плодородия. Воскресила своего мужа Осириса и родила Гора.',
     attributes: ['Материнство', 'Магия', 'Исцеление'],
     symbols: ['Трон', 'Тиет', 'Систрум'],
+    pronunciation: 'Isis',
+    relatedDeities: [7, 8],
   },
 ];
 
@@ -111,10 +131,20 @@ const cultures = {
 const Index = () => {
   const [selectedCulture, setSelectedCulture] = useState<string>('all');
   const [selectedDeity, setSelectedDeity] = useState<Deity | null>(null);
+  const [showRelations, setShowRelations] = useState(false);
 
   const filteredDeities = selectedCulture === 'all' 
     ? deities 
     : deities.filter(d => d.culture === selectedCulture);
+
+  const playPronunciation = (text: string) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.8;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-secondary to-background">
@@ -148,6 +178,62 @@ const Index = () => {
       </div>
 
       <main className="container mx-auto px-4 pb-20">
+        <div className="flex justify-center mb-8">
+          <button
+            onClick={() => setShowRelations(!showRelations)}
+            className="px-6 py-3 bg-primary/10 hover:bg-primary/20 border-2 border-primary rounded-lg transition-all flex items-center gap-2 text-primary font-semibold"
+          >
+            <Icon name="Network" size={20} />
+            {showRelations ? 'Скрыть карту связей' : 'Показать карту связей'}
+          </button>
+        </div>
+
+        {showRelations && (
+          <div className="mb-12 p-8 bg-card/50 backdrop-blur rounded-lg border-2 border-primary/30 animate-fade-in">
+            <h2 className="text-3xl font-bold text-center mb-8 text-primary">Карта связей божеств</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {Object.entries(cultures).map(([key, culture]) => {
+                const culturDeities = deities.filter(d => d.culture === key);
+                return (
+                  <div key={key} className="space-y-4">
+                    <h3 className="text-xl font-bold text-center flex items-center justify-center gap-2">
+                      <Icon name={culture.icon as any} size={24} className="text-primary" />
+                      {culture.name}
+                    </h3>
+                    <div className="space-y-2">
+                      {culturDeities.map(deity => (
+                        <div key={deity.id} className="p-3 bg-secondary/50 rounded-lg border border-primary/20">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold text-foreground">{deity.name}</span>
+                            <button
+                              onClick={() => setSelectedDeity(deity)}
+                              className="text-xs text-primary hover:underline"
+                            >
+                              Подробнее
+                            </button>
+                          </div>
+                          {deity.relatedDeities && deity.relatedDeities.length > 0 && (
+                            <div className="flex flex-wrap gap-1 text-xs">
+                              <span className="text-muted-foreground">Связи:</span>
+                              {deity.relatedDeities.map(relId => {
+                                const relDeity = deities.find(d => d.id === relId);
+                                return relDeity ? (
+                                  <Badge key={relId} variant="outline" className="text-xs">
+                                    {relDeity.name}
+                                  </Badge>
+                                ) : null;
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
         <Tabs defaultValue="all" className="w-full" onValueChange={setSelectedCulture}>
           <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-4 mb-12 h-auto p-2">
             <TabsTrigger value="all" className="text-base py-3">
@@ -196,8 +282,24 @@ const Index = () => {
                       )}
                     </div>
                     
-                    <CardTitle className="text-2xl text-foreground">{deity.name}</CardTitle>
-                    <CardDescription className="text-primary text-base">{deity.title}</CardDescription>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-2xl text-foreground">{deity.name}</CardTitle>
+                        <CardDescription className="text-primary text-base">{deity.title}</CardDescription>
+                      </div>
+                      {deity.pronunciation && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            playPronunciation(deity.pronunciation!);
+                          }}
+                          className="p-2 hover:bg-primary/20 rounded-full transition-colors"
+                          title="Прослушать произношение"
+                        >
+                          <Icon name="Volume2" size={20} className="text-primary" />
+                        </button>
+                      )}
+                    </div>
                   </CardHeader>
                   
                   <CardContent>
@@ -250,7 +352,18 @@ const Index = () => {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-4xl mb-2">{selectedDeity.name}</CardTitle>
+                    <div className="flex items-center gap-3 mb-2">
+                      <CardTitle className="text-4xl">{selectedDeity.name}</CardTitle>
+                      {selectedDeity.pronunciation && (
+                        <button
+                          onClick={() => playPronunciation(selectedDeity.pronunciation!)}
+                          className="p-2 hover:bg-primary/20 rounded-full transition-colors"
+                          title="Прослушать произношение"
+                        >
+                          <Icon name="Volume2" size={24} className="text-primary" />
+                        </button>
+                      )}
+                    </div>
                     <CardDescription className="text-xl text-primary">{selectedDeity.title}</CardDescription>
                     <Badge className="mt-2 bg-primary/10 text-primary border-primary/30">
                       {cultures[selectedDeity.culture as keyof typeof cultures].name} мифология
@@ -311,6 +424,33 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
+
+                {selectedDeity.relatedDeities && selectedDeity.relatedDeities.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                      <Icon name="Network" size={20} className="text-primary" />
+                      Связанные божества
+                    </h3>
+                    <div className="grid grid-cols-1 gap-2">
+                      {selectedDeity.relatedDeities.map(relId => {
+                        const relDeity = deities.find(d => d.id === relId);
+                        return relDeity ? (
+                          <button
+                            key={relId}
+                            onClick={() => setSelectedDeity(relDeity)}
+                            className="p-3 bg-secondary/50 hover:bg-secondary rounded-lg border border-primary/20 hover:border-primary/50 transition-all text-left flex items-center justify-between group"
+                          >
+                            <div>
+                              <p className="font-semibold text-foreground">{relDeity.name}</p>
+                              <p className="text-sm text-muted-foreground">{relDeity.title}</p>
+                            </div>
+                            <Icon name="ArrowRight" size={20} className="text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        ) : null;
+                      })}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
