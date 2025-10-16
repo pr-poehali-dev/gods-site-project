@@ -43,6 +43,27 @@ interface QuizQuestion {
   explanation: string;
 }
 
+interface FamilyTree {
+  culture: string;
+  nodes: FamilyNode[];
+}
+
+interface FamilyNode {
+  id: number;
+  name: string;
+  generation: number;
+  parents?: number[];
+  children?: number[];
+}
+
+interface DeityComparison {
+  domain: string;
+  greek: string;
+  norse: string;
+  egyptian: string;
+  description: string;
+}
+
 const deities: Deity[] = [
   {
     id: 1,
@@ -337,6 +358,105 @@ const quizQuestions: QuizQuestion[] = [
   },
 ];
 
+const familyTrees: FamilyTree[] = [
+  {
+    culture: 'greek',
+    nodes: [
+      { id: 1, name: 'Кронос', generation: 0 },
+      { id: 2, name: 'Рея', generation: 0 },
+      { id: 3, name: 'Зевс', generation: 1, parents: [1, 2] },
+      { id: 4, name: 'Посейдон', generation: 1, parents: [1, 2] },
+      { id: 5, name: 'Аид', generation: 1, parents: [1, 2] },
+      { id: 6, name: 'Гера', generation: 1, parents: [1, 2] },
+      { id: 7, name: 'Афина', generation: 2, parents: [3] },
+      { id: 8, name: 'Аполлон', generation: 2, parents: [3] },
+      { id: 9, name: 'Артемида', generation: 2, parents: [3] },
+      { id: 10, name: 'Арес', generation: 2, parents: [3, 6] },
+    ],
+  },
+  {
+    culture: 'norse',
+    nodes: [
+      { id: 1, name: 'Бёр', generation: 0 },
+      { id: 2, name: 'Бестла', generation: 0 },
+      { id: 3, name: 'Один', generation: 1, parents: [1, 2] },
+      { id: 4, name: 'Вили', generation: 1, parents: [1, 2] },
+      { id: 5, name: 'Фригг', generation: 1 },
+      { id: 6, name: 'Тор', generation: 2, parents: [3] },
+      { id: 7, name: 'Бальдр', generation: 2, parents: [3, 5] },
+      { id: 8, name: 'Локи', generation: 1 },
+      { id: 9, name: 'Фрейя', generation: 1 },
+      { id: 10, name: 'Фрейр', generation: 1 },
+    ],
+  },
+  {
+    culture: 'egyptian',
+    nodes: [
+      { id: 1, name: 'Геб', generation: 0 },
+      { id: 2, name: 'Нут', generation: 0 },
+      { id: 3, name: 'Осирис', generation: 1, parents: [1, 2] },
+      { id: 4, name: 'Исида', generation: 1, parents: [1, 2] },
+      { id: 5, name: 'Сет', generation: 1, parents: [1, 2] },
+      { id: 6, name: 'Нефтида', generation: 1, parents: [1, 2] },
+      { id: 7, name: 'Гор', generation: 2, parents: [3, 4] },
+      { id: 8, name: 'Анубис', generation: 2, parents: [3, 6] },
+      { id: 9, name: 'Ра', generation: 0 },
+    ],
+  },
+];
+
+const deityComparisons: DeityComparison[] = [
+  {
+    domain: 'Верховное божество',
+    greek: 'Зевс',
+    norse: 'Один',
+    egyptian: 'Ра',
+    description: 'Главный бог пантеона, правитель всех божеств',
+  },
+  {
+    domain: 'Гром и молнии',
+    greek: 'Зевс',
+    norse: 'Тор',
+    egyptian: 'Сет',
+    description: 'Боги бури, грома и природных стихий',
+  },
+  {
+    domain: 'Мудрость',
+    greek: 'Афина',
+    norse: 'Один',
+    egyptian: 'Тот',
+    description: 'Покровители знаний, письменности и мудрости',
+  },
+  {
+    domain: 'Загробный мир',
+    greek: 'Аид',
+    norse: 'Хель',
+    egyptian: 'Анубис',
+    description: 'Правители царства мёртвых и проводники душ',
+  },
+  {
+    domain: 'Любовь и красота',
+    greek: 'Афродита',
+    norse: 'Фрейя',
+    egyptian: 'Хатхор',
+    description: 'Богини любви, красоты и плодородия',
+  },
+  {
+    domain: 'Война',
+    greek: 'Арес',
+    norse: 'Тюр',
+    egyptian: 'Монту',
+    description: 'Боги войны, битвы и воинской доблести',
+  },
+  {
+    domain: 'Море и вода',
+    greek: 'Посейдон',
+    norse: 'Ньёрд',
+    egyptian: 'Собек',
+    description: 'Повелители водной стихии и морей',
+  },
+];
+
 const Index = () => {
   const [selectedCulture, setSelectedCulture] = useState<string>('all');
   const [selectedDeity, setSelectedDeity] = useState<Deity | null>(null);
@@ -346,6 +466,7 @@ const Index = () => {
   const [quizScore, setQuizScore] = useState(0);
   const [showQuizResult, setShowQuizResult] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [selectedFamilyTree, setSelectedFamilyTree] = useState<string>('greek');
 
   const filteredDeities = selectedCulture === 'all' 
     ? deities 
@@ -908,6 +1029,147 @@ const Index = () => {
               </button>
             </div>
           )}
+        </div>
+
+        <div className="mb-12 p-8 bg-card/50 backdrop-blur rounded-lg border-2 border-primary/30 animate-fade-in">
+          <h2 className="text-3xl font-bold text-center mb-6 text-primary flex items-center justify-center gap-3">
+            <Icon name="GitBranch" size={32} />
+            Генеалогическое древо богов
+          </h2>
+          
+          <div className="flex justify-center gap-4 mb-8">
+            {Object.entries(cultures).map(([key, culture]) => (
+              <button
+                key={key}
+                onClick={() => setSelectedFamilyTree(key)}
+                className={`px-6 py-3 rounded-lg border-2 transition-all flex items-center gap-2 ${
+                  selectedFamilyTree === key
+                    ? 'bg-primary/20 border-primary text-primary font-semibold'
+                    : 'border-primary/30 hover:border-primary/60 text-muted-foreground'
+                }`}
+              >
+                <Icon name={culture.icon as any} size={20} />
+                {culture.name}
+              </button>
+            ))}
+          </div>
+
+          <div className="max-w-5xl mx-auto">
+            {familyTrees
+              .filter(tree => tree.culture === selectedFamilyTree)
+              .map(tree => {
+                const generations = Array.from(new Set(tree.nodes.map(n => n.generation))).sort();
+                
+                return (
+                  <div key={tree.culture} className="space-y-8">
+                    {generations.map(gen => (
+                      <div key={gen} className="space-y-4">
+                        <div className="text-center">
+                          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                            Поколение {gen + 1}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-wrap justify-center gap-4">
+                          {tree.nodes
+                            .filter(node => node.generation === gen)
+                            .map(node => (
+                              <div key={node.id} className="relative">
+                                <div className="p-4 bg-secondary/80 rounded-lg border-2 border-primary/30 hover:border-primary/60 transition-all min-w-[140px] text-center">
+                                  <div className="font-bold text-foreground">{node.name}</div>
+                                  {node.parents && node.parents.length > 0 && (
+                                    <div className="text-xs text-muted-foreground mt-2">
+                                      <div className="flex items-center justify-center gap-1">
+                                        <Icon name="ArrowUp" size={12} />
+                                        <span>
+                                          {node.parents
+                                            .map(pid => tree.nodes.find(n => n.id === pid)?.name)
+                                            .filter(Boolean)
+                                            .join(' + ')}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                                {gen < generations[generations.length - 1] && (
+                                  <div className="absolute left-1/2 -bottom-6 w-0.5 h-6 bg-primary/30 transform -translate-x-1/2"></div>
+                                )}
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+
+        <div className="mb-12 p-8 bg-card/50 backdrop-blur rounded-lg border-2 border-accent/30 animate-fade-in">
+          <h2 className="text-3xl font-bold text-center mb-6 text-accent flex items-center justify-center gap-3">
+            <Icon name="Scale" size={32} />
+            Сравнительная таблица божеств
+          </h2>
+          <p className="text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
+            Боги разных культур часто выполняли схожие функции. Эта таблица показывает параллели между греческими, скандинавскими и египетскими божествами.
+          </p>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b-2 border-accent/30">
+                  <th className="p-4 text-left font-bold text-accent">Сфера влияния</th>
+                  <th className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Icon name="Columns3" size={20} className="text-accent" />
+                      <span className="font-bold text-accent">Греция</span>
+                    </div>
+                  </th>
+                  <th className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Icon name="Axe" size={20} className="text-accent" />
+                      <span className="font-bold text-accent">Скандинавия</span>
+                    </div>
+                  </th>
+                  <th className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Icon name="Pyramid" size={20} className="text-accent" />
+                      <span className="font-bold text-accent">Египет</span>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {deityComparisons.map((comparison, index) => (
+                  <tr 
+                    key={index}
+                    className="border-b border-accent/20 hover:bg-accent/5 transition-colors"
+                  >
+                    <td className="p-4">
+                      <div>
+                        <div className="font-semibold text-foreground">{comparison.domain}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{comparison.description}</div>
+                      </div>
+                    </td>
+                    <td className="p-4 text-center">
+                      <Badge className="bg-primary/20 text-primary border-primary/30">
+                        {comparison.greek}
+                      </Badge>
+                    </td>
+                    <td className="p-4 text-center">
+                      <Badge className="bg-primary/20 text-primary border-primary/30">
+                        {comparison.norse}
+                      </Badge>
+                    </td>
+                    <td className="p-4 text-center">
+                      <Badge className="bg-primary/20 text-primary border-primary/30">
+                        {comparison.egyptian}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
